@@ -1,0 +1,105 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Generate PDF and Docx
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  pdf:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Install pandoc and latex
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get -y install --no-install-recommends pandoc texlive texlive-base texlive-luatex texlive-latex-base texlive-latex-recommended texlive-latex-extra lmodern texlive-fonts-recommended texlive-xetex texlive-fonts-extra 
+
+      # Runs a set of commands using the runners shell
+      - name: Generate PDF
+        run: |
+          DEST="my-markdown-document-${{ github.run_number }}"
+          DATE=$(date "+%d %B %Y")
+          BUILD=b${{ github.run_number }}
+          VERSION="v0.01"
+          PANDOC_OPTIONS="markdown_strict+pipe_tables+backtick_code_blocks+auto_identifiers+yaml_metadata_block+implicit_figures+table_captions+footnotes+smart+escaped_line_breaks+header_attributes"
+
+          pandoc -s -o $DEST.pdf \
+          -f $PANDOC_OPTIONS \
+          --data-dir=pandoc \
+          --resource-path=.:"./graphics" \
+          --template eisvogel_mod \
+          --listings \
+          --columns=50 \
+          --number-sections \
+          --pdf-engine lualatex \
+          --toc --toc-depth=2 \
+          --dpi=300 \
+          -M date="$DATE, $VERSION, $BUILD" \
+          $(cat INDEX)
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          # Artifact name
+          name: my-markdown-document-${{ github.run_number }}.pdf
+          # A file, directory or wildcard pattern that describes what to upload
+          path: my-markdown-document-${{ github.run_number }}.pdf
+          retention-days: 7
+
+  docx:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Install pandoc and latex
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get -y install --no-install-recommends pandoc texlive texlive-base texlive-luatex texlive-latex-base texlive-latex-recommended texlive-latex-extra lmodern texlive-fonts-recommended texlive-xetex texlive-fonts-extra 
+
+      # Runs a set of commands using the runners shell
+      - name: Generate DOCX
+        run: |
+          DEST="my-markdown-document-${{ github.run_number }}"
+          DATE=$(date "+%d %B %Y")
+          BUILD=${{ github.run_number }}
+          VERSION="v0.01"
+          PANDOC_OPTIONS="markdown_strict+implicit_figures+pipe_tables+backtick_code_blocks+yaml_metadata_block+table_captions+auto_identifiers"
+
+          pandoc -s -o $DEST.docx \
+            -f $PANDOC_OPTIONS \
+            --data-dir=pandoc \
+            --resource-path=.:"./graphics" \
+            --reference-doc="pandoc/templates/reference.docx" \
+            --listings \
+            --columns=50 \
+            --number-sections \
+            --toc --toc-depth=2 \
+            --dpi=300 \
+            -M date="$DATE, $VERSION" \
+            $(cat INDEX)
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          # Artifact name
+          name: my-markdown-document-${{ github.run_number }}.docx
+          # A file, directory or wildcard pattern that describes what to upload
+          path: my-markdown-document-${{ github.run_number }}.docx
+          retention-days: 7

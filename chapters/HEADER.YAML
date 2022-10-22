@@ -1,0 +1,30 @@
+---
+title: This is the title of the Document
+subtitle: And I am the sub-title
+author: "Author: We are the authors of the document"
+date: 
+thanks: "This is an additional statement that goes on the title page. E.g., Copyright, license, etc."
+geometry: "letterpaper,left=1in,right=1in,top=1.25in,bottom=1.25in"
+titlepage: true
+titlepage-color: "FFFFFF"
+titlepage-text-color: "000000"
+titlepage-rule-color: "CCCCCC"
+titlepage-rule-height: 4
+logo: "graphics/Octocat.png"
+logo-width: 100 
+page-background:
+page-background-opacity:
+links-as-notes: true
+lot: true
+lof: true
+listings-disable-line-numbers: true
+listings-no-page-break: false
+disable-header-and-footer: false
+header-left: "Header Left"
+header-center: "Header Center"
+header-right: "Header Right"
+footer-left: "Footer Left"
+footer-center: "Footer Center"
+subparagraph: true
+lang: en-US 
+---
