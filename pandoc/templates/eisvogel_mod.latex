@@ -984,7 +984,7 @@ $if(first-chapter)$
 $endif$
 
 %% 
-%% sign page?
+%% If this page is not needed, you can delete everything between the \newpage tags
 %%
 
 
@@ -996,10 +996,10 @@ $endif$
 \textsf{Approved by:}
 \vskip 3em
 \rule{10cm}{1pt}
-\textsf{\\George W. Lamb\\DoD CIO, Cloud and Software Modernization Directorate}
+\textsf{\\John Smith\\John Smith's title - this is found in the eisvogel_mod latex file}
 \vskip 3em
 \rule{10cm}{1pt}
-\textsf{\\Jonathan M. Williams\\DISA, Hosting and Compute Center, Infrastructure as Code PM}
+\textsf{\\John Smith\\John Smith's title - this is found in the eisvogel_mod latex file}
 \vfill
 \textsf{}
 \newpage
