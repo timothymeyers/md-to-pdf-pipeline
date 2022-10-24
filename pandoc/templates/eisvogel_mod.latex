@@ -984,7 +984,7 @@ $if(first-chapter)$
 $endif$
 
 %% 
-%% If this page is not needed, you can delete everything between the \newpage tags
+%% If this page is not needed, you can delete everything between the newpage tags
 %%
 
 
